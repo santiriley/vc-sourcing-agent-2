@@ -23,8 +23,12 @@ jobs:
       - name: Write service account JSON
         shell: bash
         run: |
-          printf "%s" "${{ secrets.GCP_SA_JSON_BASE64 }}" | base64 -d > service_account.json
-          ls -l service_account.json
+          printf '%s' "${{ secrets.GCP_SA_JSON }}" > service_account.json
+          python - << 'PY'
+          import json, sys
+          json.load(open('service_account.json'))  # validate JSON
+          print("service_account.json OK")
+          PY
 
       - name: Execute notebook with parameters
         run: |
