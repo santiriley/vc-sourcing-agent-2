@@ -35,19 +35,20 @@ jobs:
            exit 1
             fi
 
-    # Sanity-check the JSON so we fail fast with a clear error
-    python - <<'PY'
-import json, sys
-json.load(open('service_account.json'))
-print("service_account.json OK")
-PY
+          # Sanity-check the JSON so we fail fast with a clear error
+          python - <<'PY'
+            import json, sys
+          json.load(open('service_account.json'))
+          print("service_account.json OK")
+          PY
 
 
-      - name: Execute notebook with parameters
-        run: |
-          papermill vc_sourcing_agent.ipynb executed.ipynb \
+          - name: Execute notebook with parameters
+            run: |
+            papermill "VC_Sourcing_Agent_Colab (3).ipynb" executed.ipynb \
             -p GOOGLE_SHEET_ID "${{ secrets.GOOGLE_SHEET_ID }}" \
             -p TZ "${{ secrets.TZ }}"
+
 
       - name: Upload executed notebook (artifact)
         uses: actions/upload-artifact@v4
