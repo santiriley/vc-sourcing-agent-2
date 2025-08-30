@@ -1,0 +1,32 @@
+weights:
+  geo:
+    countries:
+      - Brazil
+      - Mexico
+      - Argentina
+      - Chile
+      - Colombia
+    weight: 3
+  post_revenue:
+    keywords:
+      - revenue
+      - profit
+      - annual recurring revenue
+      - ARR
+    weight: 3
+  female:
+    keywords:
+      - female
+      - woman
+      - women
+      - girl
+    weight: 2
+  enterprise:
+    keywords:
+      - enterprise
+      - b2b
+    weight: 1
+  fintech_penalty:
+    keywords:
+      - fintech
+    weight: -2
