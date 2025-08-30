@@ -1,0 +1,5 @@
+weights:
+  central_america_presence: 1.0
+  south_of_mexico_presence: 1.0
+  fintech_keyword_penalty: -1.0
+  female_founder_boost: 1.0
