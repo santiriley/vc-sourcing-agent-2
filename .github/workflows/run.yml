@@ -2,7 +2,7 @@ name: VC Sourcing (Daily)
 
 on:
   schedule:
-    - cron: "30 14 * * *"     # ~08:30 America/Costa_Rica (UTC-based)
+    - cron: "30 14 * * *"    # ~08:30 America/Costa_Rica (UTC time)
   workflow_dispatch: {}
 
 jobs:
@@ -23,38 +23,27 @@ jobs:
       - name: Write service account JSON
         shell: bash
         env:
-        # Pass secrets into env so bash doesn't choke on multi-line JSON
           GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
           GCP_SA_JSON_BASE64: ${{ secrets.GCP_SA_JSON_BASE64 }}
-          HAS_JSON: ${{ secrets.GCP_SA_JSON != '' }}
-          HAS_JSON_B64: ${{ secrets.GCP_SA_JSON_BASE64 != '' }}
         run: |
-          set -eo pipefail
-            echo "has_raw=${HAS_JSON} has_b64=${HAS_JSON_B64}"
-          # Only print lengths (safe), never the secret itself:
-            echo "len_raw=${#GCP_SA_JSON} len_b64=${#GCP_SA_JSON_BASE64}"
-          if [[ "${HAS_JSON}" == "true" ]]; then
+          set -euo pipefail
+          if [[ -n "${GCP_SA_JSON}" ]]; then
             printf '%s' "${GCP_SA_JSON}" > service_account.json
             echo "Wrote service_account.json from GCP_SA_JSON"
-          elif [[ "${HAS_JSON_B64}" == "true" ]]; then
+          elif [[ -n "${GCP_SA_JSON_BASE64}" ]]; then
             printf '%s' "${GCP_SA_JSON_BASE64}" | base64 -d > service_account.json
             echo "Wrote service_account.json from GCP_SA_JSON_BASE64"
           else
-            echo "❌ Neither GCP_SA_JSON nor GCP_SA_JSON_BASE64 is defined for this repo."
+            echo "❌ Missing secret: add GCP_SA_JSON or GCP_SA_JSON_BASE64"
             exit 1
           fi
+          python -c 'import json; json.load(open("service_account.json")); print("service_account.json OK")'
 
-          # Validate JSON so we fail fast with a clear error
-          python - <<'PY 'import json; json.load(open('service_account.json')); print("service_account.json OK") PY
-
-
-
-          - name: Execute notebook with parameters
-            run: |
-            papermill "VC_Sourcing_Agent_Colab (3).ipynb" executed.ipynb \
+      - name: Execute notebook with parameters
+        run: |
+          papermill "VC_Sourcing_Agent_Colab (3).ipynb" executed.ipynb \
             -p GOOGLE_SHEET_ID "${{ secrets.GOOGLE_SHEET_ID }}" \
             -p TZ "${{ secrets.TZ }}"
-
 
       - name: Upload executed notebook (artifact)
         uses: actions/upload-artifact@v4
