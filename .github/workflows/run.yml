@@ -39,14 +39,8 @@ jobs:
           fi
           python -c 'import json; json.load(open("service_account.json")); print("service_account.json OK")'
 
-      - name: Execute notebook with parameters
-        run: |
-          papermill "VC_Sourcing_Agent_Colab (3).ipynb" executed.ipynb \
-            -p GOOGLE_SHEET_ID "${{ secrets.GOOGLE_SHEET_ID }}" \
-            -p TZ "${{ secrets.TZ }}"
-
-      - name: Upload executed notebook (artifact)
-        uses: actions/upload-artifact@v4
-        with:
-          name: run-${{ github.run_number }}
-          path: executed.ipynb
+      - name: Run sourcing script
+        env:
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          TZ: ${{ secrets.TZ }}
+        run: python src/sourcing.py
