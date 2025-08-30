@@ -1,0 +1,3 @@
+enable_cse: true
+cse_queries:
+  - "startup funding news"
