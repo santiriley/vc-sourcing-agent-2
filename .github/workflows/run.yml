@@ -23,18 +23,16 @@ jobs:
       - name: Write service account JSON
         shell: bash
         env:
-            # Pass secrets into env so bash doesn't choke on multi-line JSON
-            GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
-            GCP_SA_JSON_BASE64: ${{ secrets.GCP_SA_JSON_BASE64 }}
-            HAS_JSON: ${{ secrets.GCP_SA_JSON != '' }}
-            HAS_JSON_B64: ${{ secrets.GCP_SA_JSON_BASE64 != '' }}
+        # Pass secrets into env so bash doesn't choke on multi-line JSON
+          GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
+          GCP_SA_JSON_BASE64: ${{ secrets.GCP_SA_JSON_BASE64 }}
+          HAS_JSON: ${{ secrets.GCP_SA_JSON != '' }}
+          HAS_JSON_B64: ${{ secrets.GCP_SA_JSON_BASE64 != '' }}
         run: |
           set -eo pipefail
-
-          echo "has_raw=${HAS_JSON} has_b64=${HAS_JSON_B64}"
+            echo "has_raw=${HAS_JSON} has_b64=${HAS_JSON_B64}"
           # Only print lengths (safe), never the secret itself:
-          echo "len_raw=${#GCP_SA_JSON} len_b64=${#GCP_SA_JSON_BASE64}"
-
+            echo "len_raw=${#GCP_SA_JSON} len_b64=${#GCP_SA_JSON_BASE64}"
           if [[ "${HAS_JSON}" == "true" ]]; then
             printf '%s' "${GCP_SA_JSON}" > service_account.json
             echo "Wrote service_account.json from GCP_SA_JSON"
@@ -47,9 +45,7 @@ jobs:
           fi
 
           # Validate JSON so we fail fast with a clear error
-          python - <<'PY'
-            import json; json.load(open('service_account.json')); print("service_account.json OK")
-            PY
+          python - <<'PY 'import json; json.load(open('service_account.json')); print("service_account.json OK") PY
 
 
 
