@@ -45,8 +45,11 @@ jobs:
             -p GOOGLE_SHEET_ID "${{ secrets.GOOGLE_SHEET_ID }}" \
             -p TZ "${{ secrets.TZ }}"
 
-      - name: Upload executed notebook (artifact)
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: run-${{ github.run_number }}
-          path: executed.ipynb
+          path: |
+            executed.ipynb
+            data/new_rows.csv
+          if-no-files-found: warn
