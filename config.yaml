@@ -1,0 +1,14 @@
+enable_cse: true
+cse_queries:
+  - '(post-revenue OR "paying customers" OR ingresos OR facturación) (seed OR "pre-seed" OR ronda) (Costa Rica OR Guatemala OR El Salvador OR Honduras OR Nicaragua OR Panama OR Belize OR Colombia OR Venezuela OR Ecuador OR Peru OR Bolivia OR Chile OR Argentina OR Uruguay OR Paraguay OR Brazil)'
+feeds_extra:
+  - 'https://www.prnewswire.com/news-releases/news-releases-list/?rss=1&lang=es'   # example; swap for LATAM endpoints you want
+  - 'https://www.businesswire.com/portal/site/home/news/subject/?vnsId=31300&newsLang=es&rss=1' # example
+  - 'https://medium.com/feed/500-startups-latam'   # 500 LatAm
+  - 'https://startups.com/feed'                    # replace w/ Startupeable/Startups Latam feeds you pick
+weights:
+  geo: 3
+  post_revenue: 3
+  female: 2
+  enterprise: 1
+  fintech_penalty: -2
