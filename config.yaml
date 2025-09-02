@@ -2,10 +2,70 @@ enable_cse: true
 cse_queries:
   - '(post-revenue OR "paying customers" OR ingresos OR facturación) (seed OR "pre-seed" OR ronda) (Costa Rica OR Guatemala OR El Salvador OR Honduras OR Nicaragua OR Panama OR Belize OR Colombia OR Venezuela OR Ecuador OR Peru OR Bolivia OR Chile OR Argentina OR Uruguay OR Paraguay OR Brazil)'
 feeds_extra:
-  - 'https://www.prnewswire.com/news-releases/news-releases-list/?rss=1&lang=es'   # example; swap for LATAM endpoints you want
-  - 'https://www.businesswire.com/portal/site/home/news/subject/?vnsId=31300&newsLang=es&rss=1' # example
-  - 'https://medium.com/feed/500-startups-latam'   # 500 LatAm
-  - 'https://startups.com/feed'                    # replace w/ Startupeable/Startups Latam feeds you pick
+  - 'https://www.prnewswire.com/news-releases/news-releases-list/?rss=1&lang=es'
+  - 'https://www.businesswire.com/portal/site/home/news/subject/?vnsId=31300&newsLang=es&rss=1'
+  - 'https://medium.com/feed/500-startups-latam'
+  - 'https://startups.com/feed'
+
+# Lists used by filters/scoring
+countries:
+  - Costa Rica
+  - Guatemala
+  - El Salvador
+  - Honduras
+  - Nicaragua
+  - Panama
+  - Belize
+  - Colombia
+  - Venezuela
+  - Ecuador
+  - Peru
+  - Bolivia
+  - Chile
+  - Argentina
+  - Uruguay
+  - Paraguay
+  - Brazil
+
+post_revenue_terms:
+  - post-revenue
+  - revenue
+  - facturación
+  - ingresos
+  - ARR
+  - MRR
+  - paying customers
+  - clientes de pago
+  - contrato
+  - invoices
+  - compras recurrentes
+
+enterprise_signal_terms:
+  - enterprise
+  - b2b
+  - corporativo
+  - contrato
+
+sector_blacklist_terms:
+  fintech:
+    - fintech
+    - bank
+    - banco
+    - pagos
+
+exclude_terms:
+  - pre-revenue
+  - idea
+  - hackathon
+  - university project
+  - seeking cofounder
+  - preincubation
+  - curso
+  - bootcamp
+
+min_score_to_append: 4
+min_score_to_review: 2
+
 weights:
   geo: 3
   post_revenue: 3
