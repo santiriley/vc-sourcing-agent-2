@@ -1,11 +1,53 @@
 enable_cse: true
 cse_queries:
-  - '(post-revenue OR "paying customers" OR ingresos OR facturación) (seed OR "pre-seed" OR ronda) (Costa Rica OR Guatemala OR El Salvador OR Honduras OR Nicaragua OR Panama OR Belize OR Colombia OR Venezuela OR Ecuador OR Peru OR Bolivia OR Chile OR Argentina OR Uruguay OR Paraguay OR Brazil)'
+  - '(post-revenue OR "paying customers" OR ingresos OR facturación) (seed OR "pre-seed" OR ronda) (Costa Rica OR Guatemala OR El Salvador OR Honduras OR Nicaragua OR Panama OR Belize OR Colombia OR Venezuela OR Ecuador OR Peru OR Bolivia OR Chile OR Argentina OR Uruguay OR Paraguay OR Brazil OR Mexico)'
 feeds_extra:
-  - 'https://www.prnewswire.com/news-releases/news-releases-list/?rss=1&lang=es'   # example; swap for LATAM endpoints you want
-  - 'https://www.businesswire.com/portal/site/home/news/subject/?vnsId=31300&newsLang=es&rss=1' # example
-  - 'https://medium.com/feed/500-startups-latam'   # 500 LatAm
-  - 'https://startups.com/feed'                    # replace w/ Startupeable/Startups Latam feeds you pick
+  - 'https://www.prnewswire.com/news-releases/news-releases-list/?rss=1&lang=es'
+  - 'https://www.businesswire.com/portal/site/home/news/subject/?vnsId=31300&newsLang=es&rss=1'
+  - 'https://medium.com/feed/500-startups-latam'
+  - 'https://startups.com/feed'
+min_score_to_append: 4
+min_score_to_review: 2
+dedupe_min_ratio: 86
+dedupe_fields: ["Company", "Title"]
+exclude_terms:
+  - pre-revenue
+  - idea
+  - hackathon
+  - seeking cofounder
+  - curso
+  - bootcamp
+  - incubadora estudiantil
+must_have_any:
+  - revenue
+  - ingresos
+  - facturación
+  - paying customers
+must_have_geo:
+  - costa rica
+  - guatemala
+  - el salvador
+  - honduras
+  - nicaragua
+  - panama
+  - belize
+  - colombia
+  - venezuela
+  - ecuador
+  - peru
+  - bolivia
+  - chile
+  - argentina
+  - uruguay
+  - paraguay
+  - brazil
+  - mexico
+enterprise_bonus:
+  - enterprise
+  - b2b
+fintech_penalty:
+  - fintech
+  - payments
 weights:
   geo: 3
   post_revenue: 3
