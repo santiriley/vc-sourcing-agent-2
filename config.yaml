@@ -12,3 +12,76 @@ weights:
   female: 2
   enterprise: 1
   fintech_penalty: -2
+rules:
+  must_have_any:
+    revenue_indicators:
+      terms:
+        - post-revenue
+        - ingresos
+        - facturación
+        - MRR
+        - ARR
+        - clientes de pago
+        - contrato
+        - invoices
+        - compras recurrentes
+      reason: POST_REVENUE
+      missing_reason: NO_REVENUE
+  must_have_geo:
+    countries:
+      - Costa Rica
+      - Guatemala
+      - El Salvador
+      - Honduras
+      - Nicaragua
+      - Panama
+      - Belize
+      - Colombia
+      - Venezuela
+      - Ecuador
+      - Peru
+      - Bolivia
+      - Chile
+      - Argentina
+      - Uruguay
+      - Paraguay
+      - Brazil
+    reason: GEO
+    missing_reason: NO_GEO
+  exclude_if_any:
+    terms:
+      - pre-revenue
+      - idea
+      - hackathon
+      - seeking cofounder
+      - curso
+      - bootcamp
+    reason: EXCLUDE
+  sector_penalties:
+    fintech:
+      terms:
+        - wallet
+        - lending
+        - BNPL
+        - neobank
+        - crypto
+        - remittances
+      reason: FINTECH
+  enterprise_bonus:
+    terms:
+      - B2B
+      - enterprise
+      - pilot
+      - paid pilot
+      - contrato
+      - cliente corporativo
+    reason: ENTERPRISE
+  female_bonus:
+    terms:
+      - fundadora
+      - cofundadora
+      - "co-founder (she/her)"
+    reason: FEMALE_FOUNDER
+thresholds:
+  min_score_to_append: 4
+  min_score_to_review: 2
