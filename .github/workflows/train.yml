@@ -1,0 +1,52 @@
+name: Train model (Weekly)
+
+on:
+  schedule:
+    - cron: "0 12 * * 1"
+  workflow_dispatch: {}
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Write service account JSON
+        shell: bash
+        env:
+          GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
+          GCP_SA_JSON_BASE64: ${{ secrets.GCP_SA_JSON_BASE64 }}
+        run: |
+          set -euo pipefail
+          if [[ -n "${GCP_SA_JSON}" ]]; then
+            printf '%s' "${GCP_SA_JSON}" > service_account.json
+            echo "Wrote service_account.json from GCP_SA_JSON"
+          elif [[ -n "${GCP_SA_JSON_BASE64}" ]]; then
+            printf '%s' "${GCP_SA_JSON_BASE64}" | base64 -d > service_account.json
+            echo "Wrote service_account.json from GCP_SA_JSON_BASE64"
+          else
+            echo "❌ Missing secret: add GCP_SA_JSON or GCP_SA_JSON_BASE64"
+            exit 1
+          fi
+          python -c 'import json; json.load(open("service_account.json")); print("service_account.json OK")'
+
+      - name: Train model
+        env:
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+        run: python -m src.train
+
+      - name: Upload model artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: model
+          path: model/model.joblib
