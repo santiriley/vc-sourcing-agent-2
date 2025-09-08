@@ -12,3 +12,11 @@ weights:
   female: 2
   enterprise: 1
   fintech_penalty: -2
+  hiring: 1
+  press: 1
+hiring:
+  enable: true
+  timeout_s: 5
+  guess_slug_from_domain: true
+press:
+  enable: true
