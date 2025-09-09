@@ -12,3 +12,6 @@ weights:
   female: 2
   enterprise: 1
   fintech_penalty: -2
+learning:
+  enable: true
+  alpha_rules_weight: 0.7
