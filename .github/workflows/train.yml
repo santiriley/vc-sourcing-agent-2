@@ -1,13 +1,15 @@
-name: VC Sourcing (Daily)
+name: VC Sourcing (Weekly Train)
 
 on:
   schedule:
-    - cron: "30 14 * * *"    # ~08:30 America/Costa_Rica (UTC time)
+    - cron: "0 6 * * 1"  # Every Monday 06:00 UTC
   workflow_dispatch: {}
 
 jobs:
-  run:
+  train:
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,14 +41,13 @@ jobs:
           fi
           python -c 'import json; json.load(open("service_account.json")); print("service_account.json OK")'
 
-      - name: Execute notebook with parameters
+      - name: Train model
         run: |
-          papermill "VC_Sourcing_Agent_Colab (3).ipynb" executed.ipynb \
-            -p GOOGLE_SHEET_ID "${{ secrets.GOOGLE_SHEET_ID }}" \
-            -p TZ "${{ secrets.TZ }}"
+          python -m src.train
 
-      - name: Upload executed notebook (artifact)
+      - name: Upload model artifact
         uses: actions/upload-artifact@v4
         with:
-          name: run-${{ github.run_number }}
-          path: executed.ipynb
+          name: model
+          path: model/model.joblib
+          if-no-files-found: ignore
